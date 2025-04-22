@@ -72,6 +72,7 @@ using namespace metal;
     3. isEnabled:          toggles the effect on or off.
  */
 
+
 [[ stitchable ]]
 half4 Ripple(
              //  (float, float) 2D vector (x, y)
@@ -122,8 +123,12 @@ half4 Ripple(
 
 
 
-//  To-Do: multi waves implementation on UI
+
 //  This Shader provides superposition of multi waves.
+
+//  To-Do:
+//      1. New view modifier to support this multiripple Shader.
+//      2. implement on UI.
 #define MAX_WAVES 8
 
 [[ stitchable ]]

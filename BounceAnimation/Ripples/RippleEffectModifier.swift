@@ -71,15 +71,46 @@ struct RippleModifier: ViewModifier {
 }
 
 extension View {
+    
+    //  1. What is modifier()?
+    //
+    //      It returns modified self as ModifiedContent<Self,SpatialPressingGestureModifier> whose type is 'some View'.
+    //      look at this:
+    //              struct ModifiedContent<Content, Modifier> {~~}
+    //              extension ModifiedContent : View where Content : View, Modifier : ViewModifier {~~}
+    //
+    //      func modifier is provided default implementation in extension of View.
+    //      The implementation is simple: init ModifiedContent with self and given parameter.
+    //
+    //      we can call this just right after view like:
+    //              someFuckView
+    //                  .modifier(customSomeViewModifier(someParamsHere:~~))
+    //      which is annoying.
+    
+    //      So, most custom viewModifier is applied in the project this way (i guess):
+    //          1.  extension View with func whose params are params of custom view modifier and which returns 'some View'.
+    //          2.  call that custom one in modifier()
+    //
+    //      What has changed?
+    //              someFuckView
+    //                  .theFuncInExtensionView(params)
+    //      Easy and Clean.
+    //
+    //  2. What is going here under the hood?
+    //
+    //      someFuckView.theFuncInExtensionView() is just structInstance.method().
+    //      It returns type of ContentModified<someFuckview.Self, customSomeViewModifierHere>.
+    //      That is just SomeStruct<T,U>: View as extension of ModifiedContent insists.
+    //      Then, parent struct, that might conform to View, and his viewbuilder will use this some View to build his body.
+    
     func onPressingChanged(_ action: @escaping (CGPoint?) -> Void) -> some View {
         modifier(SpatialPressingGestureModifier(action: action))
     }
 }
 
 struct SpatialPressingGestureModifier: ViewModifier {
-    var onPressingChanged: (CGPoint?) -> Void
-
     @State var currentLocation: CGPoint?
+    var onPressingChanged: (CGPoint?) -> Void
 
     init(action: @escaping (CGPoint?) -> Void) {
         self.onPressingChanged = action
@@ -97,15 +128,13 @@ struct SpatialPressingGestureModifier: ViewModifier {
 }
 
 struct SpatialPressingGesture: UIGestureRecognizerRepresentable {
+    @Binding var location: CGPoint?
+
     final class Coordinator: NSObject, UIGestureRecognizerDelegate {
         @objc
-        func gestureRecognizer(
-            _ gestureRecognizer: UIGestureRecognizer,
-            shouldRecognizeSimultaneouslyWith other: UIGestureRecognizer
-        ) -> Bool { true }
+        func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer,
+                               shouldRecognizeSimultaneouslyWith other: UIGestureRecognizer) -> Bool { true }
     }
-
-    @Binding var location: CGPoint?
 
     func makeCoordinator(converter: CoordinateSpaceConverter) -> Coordinator {
         Coordinator()
@@ -119,17 +148,16 @@ struct SpatialPressingGesture: UIGestureRecognizerRepresentable {
         return recognizer
     }
 
-    func handleUIGestureRecognizerAction(
-        _ recognizer: UIGestureRecognizerType, context: Context) {
-            switch recognizer.state {
-                case .began:
-                    location = context.converter.localLocation
-                case .ended, .cancelled, .failed:
-                    location = nil
-                default:
-                    break
-            }
+    func handleUIGestureRecognizerAction(_ recognizer: UIGestureRecognizerType, context: Context) {
+        switch recognizer.state {
+        case .began:
+            location = context.converter.localLocation
+        case .ended, .cancelled, .failed:
+            location = nil
+        default:
+            break
         }
     }
+}
 
 

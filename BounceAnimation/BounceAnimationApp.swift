@@ -11,7 +11,7 @@ import SwiftUI
 struct BounceAnimationApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            MeshGradientView(t: 0)
         }
     }
 }
