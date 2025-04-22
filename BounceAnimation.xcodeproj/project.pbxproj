@@ -30,11 +30,6 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		87C2AE572DB6692C0092AF98 /* BounceAnimation */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = BounceAnimation;
-			sourceTree = "<group>";
-		};
 		87C2AE682DB6692D0092AF98 /* BounceAnimationTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = BounceAnimationTests;
@@ -43,6 +38,11 @@
 		87C2AE722DB6692D0092AF98 /* BounceAnimationUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = BounceAnimationUITests;
+			sourceTree = "<group>";
+		};
+		87C2AECD2DB7B0AB0092AF98 /* BounceAnimation */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = BounceAnimation;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -75,9 +75,9 @@
 		87C2AE4C2DB6692C0092AF98 = {
 			isa = PBXGroup;
 			children = (
-				87C2AE572DB6692C0092AF98 /* BounceAnimation */,
-				87C2AE682DB6692D0092AF98 /* BounceAnimationTests */,
+				87C2AECD2DB7B0AB0092AF98 /* BounceAnimation */,
 				87C2AE722DB6692D0092AF98 /* BounceAnimationUITests */,
+				87C2AE682DB6692D0092AF98 /* BounceAnimationTests */,
 				87C2AE562DB6692C0092AF98 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -108,7 +108,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				87C2AE572DB6692C0092AF98 /* BounceAnimation */,
+				87C2AECD2DB7B0AB0092AF98 /* BounceAnimation */,
 			);
 			name = BounceAnimation;
 			packageProductDependencies = (
